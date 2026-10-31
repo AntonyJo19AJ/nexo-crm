@@ -523,13 +523,14 @@ El workflow declara `permissions: contents: read` y no necesita secretos.
 ## Publicación en GitHub
 
 1. Crea un repositorio vacío llamado `nexo-crm` (sin README ni licencia, para no generar commits extra).
-2. Añade el remoto y sube las tres ramas:
+2. Añade el remoto (si aún no existe) y sube todas las ramas:
 
 ```bash
 git remote add origin https://github.com/AntonyJo19AJ/nexo-crm.git
-git push -u origin main develop
-git push origin --all
+git push -u origin --all
 ```
+
+> En este repositorio local el remoto `origin` ya está configurado, así que puedes saltar el primer comando.
 
 3. En **Settings → Actions → General**, verifica que los workflows tengan permisos de lectura.
 4. El workflow se ejecutará automáticamente y el badge de la parte superior mostrará su estado.
