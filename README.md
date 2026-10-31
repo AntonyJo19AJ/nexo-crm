@@ -1,5 +1,7 @@
 # Nexo CRM
 
+[![CI](https://github.com/AntonyJo19AJ/nexo-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/AntonyJo19AJ/nexo-crm/actions/workflows/ci.yml)
+
 Mini CRM para gestionar una cartera de clientes: crear, consultar, editar, buscar, filtrar y eliminar registros, con métricas en vivo y una interfaz responsive construida a medida.
 
 > Prueba técnica para el puesto de **Junior Software Developer** en **CEO Marketing**.
@@ -161,7 +163,7 @@ crm-ceo-marketing/
 ### Windows (PowerShell)
 
 ```powershell
-git clone https://github.com/TU-USUARIO/nexo-crm.git
+git clone https://github.com/AntonyJo19AJ/nexo-crm.git
 cd nexo-crm
 
 py -3.12 -m venv .venv
@@ -182,7 +184,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 ### macOS / Linux
 
 ```bash
-git clone https://github.com/TU-USUARIO/nexo-crm.git
+git clone https://github.com/AntonyJo19AJ/nexo-crm.git
 cd nexo-crm
 
 python3 -m venv .venv
@@ -524,18 +526,18 @@ El workflow declara `permissions: contents: read` y no necesita secretos.
 2. Añade el remoto y sube las tres ramas:
 
 ```bash
-git remote add origin https://github.com/TU-USUARIO/nexo-crm.git
+git remote add origin https://github.com/AntonyJo19AJ/nexo-crm.git
 git push -u origin main develop
 git push origin --all
 ```
 
 3. En **Settings → Actions → General**, verifica que los workflows tengan permisos de lectura.
-4. El workflow se ejecutará automáticamente. Puedes añadir el badge en la parte superior de este README:
-
-```markdown
-![CI](https://github.com/TU-USUARIO/nexo-crm/actions/workflows/ci.yml/badge.svg)
-```
+4. El workflow se ejecutará automáticamente y el badge de la parte superior mostrará su estado.
 
 ---
+
+## Autor
+
+**Anthony Jo** · [@AntonyJo19AJ](https://github.com/AntonyJo19AJ)
 
 Hecho con Django y JavaScript vanilla para la prueba técnica de **CEO Marketing**.
