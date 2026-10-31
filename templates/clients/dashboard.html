@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="app" id="top">
+    <div class="sidebar-overlay" id="sidebar-overlay" hidden></div>
+
+    <aside class="sidebar" id="sidebar" aria-label="Barra lateral">
+        <div class="sidebar__brand">
+            <a class="brand" href="{% url 'clients:dashboard' %}" aria-label="Nexo CRM, ir al inicio">
+                <span class="brand__mark">
+                    <svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+                </span>
+                <span class="brand__text">
+                    <strong>Nexo</strong>
+                    <span>CRM</span>
+                </span>
+            </a>
+            <button class="icon-btn sidebar__close" id="sidebar-close" type="button" aria-label="Cerrar menú">
+                <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+        </div>
+
+        <nav class="nav" aria-label="Navegación principal">
+            <p class="nav__label">Espacio de trabajo</p>
+            <a class="nav__item is-active" href="#top" aria-current="page">
+                <svg class="icon" aria-hidden="true"><use href="#i-grid"></use></svg>
+                <span>Panel</span>
+            </a>
+            <a class="nav__item" href="#clients-panel">
+                <svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg>
+                <span>Clientes</span>
+                <span class="nav__badge" id="nav-count">0</span>
+            </a>
+            <button class="nav__item" type="button" disabled>
+                <svg class="icon" aria-hidden="true"><use href="#i-chart"></use></svg>
+                <span>Reportes</span>
+                <span class="nav__soon">Pronto</span>
+            </button>
+            <button class="nav__item" type="button" disabled>
+                <svg class="icon" aria-hidden="true"><use href="#i-sliders"></use></svg>
+                <span>Ajustes</span>
+            </button>
+        </nav>
+
+        <div class="sidebar__footer">
+            <div class="tip-card">
+                <span class="tip-card__icon">
+                    <svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+                </span>
+                <p><strong>Atajo rápido</strong>Pulsa <kbd>/</kbd> para buscar un cliente al instante.</p>
+            </div>
+            <div class="user-card">
+                <span class="avatar avatar--me">EC</span>
+                <span class="user-card__text">
+                    <strong>Equipo comercial</strong>
+                    <span>Administrador</span>
+                </span>
+                <svg class="icon user-card__chevron" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main">
+        <header class="topbar">
+            <div class="topbar__left">
+                <button class="icon-btn topbar__menu" id="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">
+                    <svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+                </button>
+                <nav class="breadcrumb" aria-label="Ruta de navegación">
+                    <span>Nexo CRM</span>
+                    <span class="breadcrumb__sep">/</span>
+                    <strong>Panel</strong>
+                </nav>
+            </div>
+            <div class="topbar__actions">
+                <span class="date-chip">
+                    <svg class="icon" aria-hidden="true"><use href="#i-calendar"></use></svg>
+                    <span id="today-label">Hoy</span>
+                </span>
+                <button class="icon-btn icon-btn--dot" type="button" aria-label="Notificaciones">
+                    <svg class="icon" aria-hidden="true"><use href="#i-bell"></use></svg>
+                    <span class="dot" aria-hidden="true"></span>
+                </button>
+                <span class="topbar__divider" aria-hidden="true"></span>
+                <span class="user-chip">
+                    <span class="avatar avatar--sm">EC</span>
+                    <span class="user-chip__name">Equipo comercial</span>
+                </span>
+            </div>
+        </header>
+
+        <main class="content">
+            <section class="page-head" aria-labelledby="page-title">
+                <div>
+                    <p class="eyebrow">Panel de control</p>
+                    <h1 id="page-title">Clientes</h1>
+                    <p class="page-head__subtitle">Organiza tu cartera, da seguimiento a cada prospecto y cierra más oportunidades.</p>
+                </div>
+                <button class="btn btn--primary" id="btn-new-client" type="button">
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                    <span>Nuevo cliente</span>
+                </button>
+            </section>
+
+            <noscript>
+                <div class="notice notice--warning">
+                    <svg class="icon" aria-hidden="true"><use href="#i-alert"></use></svg>
+                    <p>Activa JavaScript para gestionar los clientes desde esta interfaz.</p>
+                </div>
+            </noscript>
+
+            <section class="stats" aria-label="Resumen de la cartera">
+                <article class="stat-card stat-card--indigo">
+                    <div class="stat-card__top">
+                        <span class="stat-card__icon">
+                            <svg class="icon" aria-hidden="true"><use href="#i-users"></use></svg>
+                        </span>
+                        <span class="stat-card__tag">Cartera</span>
+                    </div>
+                    <p class="stat-card__value" id="stat-total">—</p>
+                    <p class="stat-card__label">Clientes totales</p>
+                    <p class="stat-card__hint">Todos los registros activos</p>
+                </article>
+
+                <article class="stat-card stat-card--amber">
+                    <div class="stat-card__top">
+                        <span class="stat-card__icon">
+                            <svg class="icon" aria-hidden="true"><use href="#i-spark"></use></svg>
+                        </span>
+                        <span class="stat-card__tag">En proceso</span>
+                    </div>
+                    <p class="stat-card__value" id="stat-prospecto">—</p>
+                    <p class="stat-card__label">Prospectos</p>
+                    <p class="stat-card__hint">Oportunidades por convertir</p>
+                </article>
+
+                <article class="stat-card stat-card--green">
+                    <div class="stat-card__top">
+                        <span class="stat-card__icon">
+                            <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+                        </span>
+                        <span class="stat-card__tag">Activos</span>
+                    </div>
+                    <p class="stat-card__value" id="stat-cliente">—</p>
+                    <p class="stat-card__label">Clientes</p>
+                    <p class="stat-card__hint">Conversión actual: <strong id="stat-conversion">0%</strong></p>
+                </article>
+
+                <article class="stat-card stat-card--slate">
+                    <div class="stat-card__top">
+                        <span class="stat-card__icon">
+                            <svg class="icon" aria-hidden="true"><use href="#i-alert"></use></svg>
+                        </span>
+                        <span class="stat-card__tag">En pausa</span>
+                    </div>
+                    <p class="stat-card__value" id="stat-inactivo">—</p>
+                    <p class="stat-card__label">Inactivos</p>
+                    <p class="stat-card__hint">Requieren reactivación</p>
+                </article>
+            </section>
+
+            <section class="panel" id="clients-panel" aria-labelledby="panel-title">
+                <div class="panel__header">
+                    <div class="panel__heading">
+                        <h2 id="panel-title">Directorio de clientes</h2>
+                        <p><span id="clients-count">0</span> <span id="clients-count-label">clientes</span> en tu cartera</p>
+                    </div>
+                    <div class="search">
+                        <svg class="icon search__icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                        <label class="sr-only" for="search-input">Buscar clientes por nombre o empresa</label>
+                        <input
+                            class="search__input"
+                            id="search-input"
+                            type="search"
+                            placeholder="Buscar por nombre o empresa…"
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button class="search__clear" id="clear-search" type="button" aria-label="Limpiar búsqueda" hidden>
+                            <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+                        </button>
+                        <kbd class="search__kbd" aria-hidden="true">/</kbd>
+                    </div>
+                </div>
+
+                <div class="filters" id="status-filters" role="group" aria-label="Filtrar clientes por estado"></div>
+
+                <div class="table-wrap" id="table-wrap" aria-busy="true">
+                    <div class="loading-bar" id="table-loading" hidden aria-hidden="true"></div>
+
+                    <table class="table" id="clients-table">
+                        <caption class="sr-only">Listado de clientes registrados</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Empresa</th>
+                                <th scope="col">Teléfono</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Registrado</th>
+                                <th scope="col"><span class="sr-only">Acciones</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="clients-tbody">
+                            {% for _ in "12345" %}
+                            <tr class="skeleton-row" aria-hidden="true">
+                                <td><div class="skeleton skeleton--client"></div></td>
+                                <td><div class="skeleton skeleton--short"></div></td>
+                                <td><div class="skeleton skeleton--short"></div></td>
+                                <td><div class="skeleton skeleton--pill"></div></td>
+                                <td><div class="skeleton skeleton--short"></div></td>
+                                <td><div class="skeleton skeleton--dot"></div></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="empty" id="empty-state" hidden>
+                        <span class="empty__icon">
+                            <svg class="icon" aria-hidden="true"><use href="#i-inbox"></use></svg>
+                        </span>
+                        <h3 id="empty-title">Aún no hay clientes</h3>
+                        <p id="empty-text">Registra tu primer cliente para empezar a construir tu cartera.</p>
+                        <button class="btn btn--primary" id="empty-action" type="button">
+                            <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                            <span>Registrar cliente</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel__footer">
+                    <p>Los datos se guardan en la base de datos del servidor.</p>
+                    <p class="panel__footer-meta">Actualizado <span id="last-updated">ahora</span></p>
+                </div>
+            </section>
+
+            <footer class="page-footer">
+                <p>Nexo CRM · Hecho con Django + JavaScript vanilla</p>
+                <p>Diseño responsive para escritorio, tablet y móvil.</p>
+            </footer>
+        </main>
+    </div>
+</div>
+
+<dialog class="modal" id="client-modal" aria-labelledby="modal-title">
+    <div class="modal__content">
+        <header class="modal__header">
+            <div class="modal__heading">
+                <span class="modal__icon">
+                    <svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg>
+                </span>
+                <div>
+                    <h2 id="modal-title">Nuevo cliente</h2>
+                    <p id="modal-subtitle">Completa los datos para registrar un cliente.</p>
+                </div>
+            </div>
+            <button class="icon-btn modal__close" type="button" data-close-modal aria-label="Cerrar formulario">
+                <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+        </header>
+
+        <form class="form" id="client-form" novalidate>
+            {% csrf_token %}
+            <div class="form__grid">
+                <div class="field">
+                    <label for="field-name">Nombre completo <span class="required" aria-hidden="true">*</span></label>
+                    <input id="field-name" name="name" type="text" maxlength="120" autocomplete="name" placeholder="Ej. María Fernanda López" required>
+                    <p class="field__error" id="error-name" role="alert"></p>
+                </div>
+
+                <div class="field">
+                    <label for="field-company">Empresa</label>
+                    <input id="field-company" name="company" type="text" maxlength="120" autocomplete="organization" placeholder="Ej. Nube Creativa">
+                    <p class="field__error" id="error-company" role="alert"></p>
+                </div>
+
+                <div class="field">
+                    <label for="field-email">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
+                    <input id="field-email" name="email" type="email" maxlength="180" autocomplete="email" placeholder="nombre@empresa.com" required>
+                    <p class="field__error" id="error-email" role="alert"></p>
+                </div>
+
+                <div class="field">
+                    <label for="field-phone">Teléfono</label>
+                    <input id="field-phone" name="phone" type="tel" maxlength="25" autocomplete="tel" placeholder="Ej. 099 999 9999">
+                    <p class="field__error" id="error-phone" role="alert"></p>
+                </div>
+
+                <div class="field field--full">
+                    <label for="field-status">Estado</label>
+                    <div class="select">
+                        <select id="field-status" name="status">
+                            {% for value, label in status_choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <svg class="icon select__chevron" aria-hidden="true"><use href="#i-chevron-down"></use></svg>
+                    </div>
+                    <p class="field__error" id="error-status" role="alert"></p>
+                </div>
+            </div>
+
+            <footer class="modal__footer">
+                <button class="btn btn--ghost" type="button" data-close-modal>Cancelar</button>
+                <button class="btn btn--primary" type="submit" id="btn-submit">
+                    <span class="btn__label">Guardar cliente</span>
+                    <span class="spinner" id="submit-spinner" hidden aria-hidden="true"></span>
+                </button>
+            </footer>
+        </form>
+    </div>
+</dialog>
+
+<dialog class="modal modal--sm" id="delete-modal" aria-labelledby="delete-title">
+    <div class="modal__content">
+        <header class="modal__header">
+            <div class="modal__heading">
+                <span class="modal__icon modal__icon--danger">
+                    <svg class="icon" aria-hidden="true"><use href="#i-trash"></use></svg>
+                </span>
+                <div>
+                    <h2 id="delete-title">Eliminar cliente</h2>
+                    <p>Esta acción no se puede deshacer.</p>
+                </div>
+            </div>
+            <button class="icon-btn modal__close" type="button" data-close-delete aria-label="Cerrar confirmación">
+                <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+            </button>
+        </header>
+
+        <p class="modal__body">
+            ¿Seguro que deseas eliminar a <strong id="delete-client-name">este cliente</strong>?
+            Se borrarán sus datos de forma permanente.
+        </p>
+
+        <footer class="modal__footer">
+            <button class="btn btn--ghost" type="button" data-close-delete>Cancelar</button>
+            <button class="btn btn--danger" type="button" id="btn-confirm-delete">
+                <span class="btn__label">Sí, eliminar</span>
+                <span class="spinner" id="delete-spinner" hidden aria-hidden="true"></span>
+            </button>
+        </footer>
+    </div>
+</dialog>
+
+<div class="toasts" id="toast-container" aria-live="polite" aria-atomic="false"></div>
+
+{{ status_choices|json_script:"status-choices" }}
+{% endblock %}
