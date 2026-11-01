@@ -521,6 +521,16 @@
         refs.submitLabel.textContent = submitting ? "Guardando…" : state.submitLabel;
     }
 
+    /**
+     * Reactiva el scroll del documento cuando ya no queda ningún diálogo
+     * abierto. Se llama al cerrar para no depender solo del evento "close".
+     */
+    function releaseScrollLock() {
+        if (!document.querySelector("dialog[open]")) {
+            document.body.style.overflow = "";
+        }
+    }
+
     function openClientModal(client = null) {
         state.editingId = client ? client.id : null;
         refs.form.reset();
@@ -552,6 +562,7 @@
         if (refs.clientModal.open) refs.clientModal.close();
         state.editingId = null;
         setSubmitting(false);
+        releaseScrollLock();
     }
 
     async function submitClient(event) {
@@ -613,6 +624,7 @@
         if (refs.deleteModal.open) refs.deleteModal.close();
         state.pendingDelete = null;
         setDeleteSubmitting(false);
+        releaseScrollLock();
     }
 
     function setDeleteSubmitting(submitting) {
@@ -742,13 +754,15 @@
 
         refs.form.addEventListener("submit", submitClient);
 
-        refs.form.querySelectorAll("[data-close-modal]").forEach((button) => {
+        // La "x" vive en el encabezado del modal, fuera del <form>,
+        // por eso se enlaza desde el diálogo y no desde el formulario.
+        refs.clientModal.querySelectorAll("[data-close-modal]").forEach((button) => {
             button.addEventListener("click", closeClientModal);
         });
         refs.clientModal.addEventListener("close", () => {
             state.editingId = null;
             setSubmitting(false);
-            if (!document.querySelector("dialog[open]")) document.body.style.overflow = "";
+            releaseScrollLock();
         });
         refs.clientModal.addEventListener("click", (event) => {
             if (event.target === refs.clientModal) closeClientModal();
@@ -761,7 +775,7 @@
         refs.deleteModal.addEventListener("close", () => {
             state.pendingDelete = null;
             setDeleteSubmitting(false);
-            if (!document.querySelector("dialog[open]")) document.body.style.overflow = "";
+            releaseScrollLock();
         });
         refs.deleteModal.addEventListener("click", (event) => {
             if (event.target === refs.deleteModal) closeDeleteModal();
